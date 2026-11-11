@@ -270,7 +270,8 @@ section{padding:96px 0}
 .day.today::after{content:"сегодня";position:absolute;top:-9px;left:12px;background:var(--text);color:var(--bg);font:500 10px/18px var(--f-m);padding:0 7px;border-radius:99px;letter-spacing:.06em;text-transform:uppercase}
 .next{margin-top:18px;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;padding:18px 22px;border:1px dashed var(--line);border-radius:var(--r);color:var(--muted)}
 .next b{font:800 clamp(20px,3vw,28px) var(--f-d);color:var(--text)}
-.next a{color:var(--sun);margin-left:auto}
+.next a{color:var(--sun);margin-left:auto;text-decoration:none}
+.next a u{text-underline-offset:3px}
 @media(max-width:820px){
   .week{grid-template-columns:1fr 1fr;gap:10px}
   .day{min-height:0;flex-direction:row;align-items:center;padding:14px 16px}
@@ -963,7 +964,7 @@ if (HALL.length) {
   const when = best.k === 0 ? "Сегодня" : best.k === 1 ? "Завтра" : NAMES[best.n - 1];
   const inTxt = h >= 24 ? `через ${Math.floor(h / 24)} д ${h % 24} ч` : `через ${h} ч ${m} мин`;
   $("#next").innerHTML = `<span>Следующий стрим:</span><b>${when}, ${SCHEDULE.time} МСК</b><span>${inTxt}</span>
-    <a href="https://t.me/s0lne4nyyy" target="_blank" rel="noopener">Внеплановые — в Telegram →</a>`;
+    <a href="https://t.me/s0lne4nyyy" target="_blank" rel="noopener"><u>Внеплановые</u> — <u>в</u> <u>Telegram</u> →</a>`;
 })();
 
 /* плеер Twitch (нужен настоящий адрес сайта) */
