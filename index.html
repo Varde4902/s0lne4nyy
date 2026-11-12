@@ -210,6 +210,8 @@ section{padding:96px 0}
 .mate .ph{position:relative}
 .quote{position:absolute;top:12px;right:12px;background:var(--paper);color:var(--ink);font:800 22px/1 var(--f-d);padding:10px 14px 12px;border-radius:14px 14px 2px 14px;transform:rotate(6deg);box-shadow:0 4px 0 rgba(0,0,0,.35)}
 .mate .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.mate-wait{border-style:dashed;background:transparent}
+.mate-wait .ph{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
 .mate-st .ph{background:var(--sun);color:var(--sun-ink)}
 .mate small{font:500 11px var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--sun)}
 .mate h3{font:800 22px var(--f-d);margin-top:-6px}
@@ -449,7 +451,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 30px;overflow:hidden}
   <div class="wrap">
     <span class="num reveal">Команда</span>
     <h2 class="h2 reveal">Кто выполняет</h2>
-    <p class="sub reveal">Они на каждом стриме. Нажми «Заказать» — и всё, что добавишь в счёт, пойдёт этому человеку.</p>
+    <p class="sub reveal" id="teamSub"></p>
     <div class="team" id="teamList"></div>
   </div>
 </section>
@@ -530,7 +532,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 30px;overflow:hidden}
       <div class="rule reveal"><span>02</span><div><h3>Пиши, что заказал</h3><p>Без текста в сообщении я не пойму, что делать. Проще всего — скопировать счёт с сайта.</p></div></div>
       <div class="rule reveal"><span>03</span><div><h3>Очередь по порядку</h3><p>Задания выполняются в порядке донатов. Большие — «Час стрима», «24 часа» — по договорённости.</p></div></div>
       <div class="rule reveal"><span>04</span><div><h3>Здоровье важнее</h3><p>Если на сегодня уже хватит, задание переносится на следующий стрим — не сгорает.</p></div></div>
-      <div class="rule reveal"><span>05</span><div><h3>Задание команде</h3><p>Денис — стример. Максим, Лёха, Витя и Уля (всё, кроме «Налысо») — команда, они на каждом стриме. Выбери, кто делает, прямо в счёте.</p></div></div>
+      <div class="rule reveal"><span>05</span><div><h3>Задание команде</h3><p>Денис — стример, Уля, Максим, Лёха и Витя — команда (Уля — всё, кроме «Налысо»). Не все бывают на каждом стриме: на сайте видны только те, кто сейчас в кадре, — их и можно выбрать в счёте.</p></div></div>
       <div class="rule reveal"><span>06</span><div><h3>Задание гостю</h3><p>Гости — не команда, их зовут на отдельные стримы. Впиши имя гостя, но сначала спроси в чате, будет ли он выполнять задание, — и только потом донать.</p></div></div>
     </div>
   </div>
@@ -564,35 +566,50 @@ footer{border-top:1px solid var(--line);padding:56px 0 30px;overflow:hidden}
   </div>
 </div>
 
-<script>
+<!-- ПРАЙС И КЛИПЫ ПО УМОЛЧАНИЮ. Цены и клипы из админки (data.json) их заменяют.
+     unit — подпись к цене, solo — только стример (без выбора «кому»), boss — главный лот (крупная карточка). -->
+<script type="application/json" id="site-data">
+{"menu": [
+  {"cat": "Налить", "items": [
+    {"id": "shot",   "title": "Стопка водки",       "price": 300},
+    {"id": "bottle", "title": "Бутылка пива",       "price": 700},
+    {"id": "ersh",   "title": "Ёрш (пиво + водка)", "price": 1500}
+  ]},
+  {"cat": "Испытания", "items": [
+    {"id": "corner", "title": "Угол",                   "price": 150,  "unit": "за минуту"},
+    {"id": "lemon",  "title": "Половина лимона",        "price": 500},
+    {"id": "push",   "title": "Отжимания / приседания", "price": 500,  "unit": "10 раз"},
+    {"id": "egg",    "title": "Яйцо об голову",         "price": 1500},
+    {"id": "shirt",  "title": "Разорвать майку",        "price": 3000}
+  ]},
+  {"cat": "Стрим", "items": [
+    {"id": "hour", "title": "Час стрима",    "price": 5000,  "unit": "+1 час", "solo": true},
+    {"id": "s24",  "title": "Стрим 24 часа", "price": 30000, "solo": true}
+  ]},
+  {"cat": "Главный лот", "items": [
+    {"id": "bald", "title": "Налысо", "price": 50000, "boss": true, "text": "Бреюсь налысо прямо на стриме. Без шуток и без париков."}
+  ]}
+],
+"clips": [
+  "https://www.twitch.tv/s0lne4nyy/clip/ExpensiveConcernedOpossumM4xHeh-p0ChWExgdNwKlFrI",
+  "https://www.twitch.tv/s0lne4nyy/clip/FancyTangibleTaroPeteZaroll-cYzaSwhi1nIH34c6",
+  "https://www.twitch.tv/s0lne4nyy/clip/CalmIronicCrabsSoBayed-hftGd8d0hnQIb3ZU",
+  "https://www.twitch.tv/s0lne4nyy/clip/ObeseLaconicFishWutFace-aF7apb_Ln26db3mw",
+  "https://www.twitch.tv/s0lne4nyy/clip/TalentedLittleHornetAMPEnergy-SDXkLWVTSzQt3KKt",
+  "https://www.twitch.tv/s0lne4nyy/clip/TastyPeppyLadiesWTRuck-J_3OPXKPnRbxQZTh"
+]}
+</script>
+
+<script type="module">
 /* ===== НАСТРОЙКИ: всё, что можно менять, — здесь ===== */
 const CONFIG = {
   twitch: "s0lne4nyy",
   da: "https://www.donationalerts.com/r/s0lne4nyy",
   dp: "https://new.donatepay.ru/donate/1535850",
 };
-// Прайс. unit — подпись к цене («за минуту»), boss:true — главный лот (крупная карточка внизу)
-const MENU = [
-  { cat: "Налить", items: [
-    { id:"shot",  title:"Стопка водки",      price:300 },
-    { id:"bottle",title:"Бутылка пива",      price:700 },
-    { id:"ersh",  title:"Ёрш (пиво + водка)", price:1500 },
-  ]},
-  { cat: "Испытания", items: [
-    { id:"corner",title:"Угол",              price:150, unit:"за минуту" },
-    { id:"lemon", title:"Половина лимона",   price:500 },
-    { id:"push",  title:"Отжимания / приседания", price:500, unit:"10 раз" },
-    { id:"egg",   title:"Яйцо об голову",    price:1500 },
-    { id:"shirt", title:"Разорвать майку",   price:3000 },
-  ]},
-  { cat: "Стрим", items: [
-    { id:"hour",  title:"Час стрима",        price:5000, unit:"+1 час", solo:true },   // solo — только стример, без выбора «кому»
-    { id:"s24",   title:"Стрим 24 часа",     price:30000, solo:true },
-  ]},
-  { cat: "Главный лот", items: [
-    { id:"bald",  title:"Налысо",            price:50000, boss:true, text:"Бреюсь налысо прямо на стриме. Без шуток и без париков." },
-  ]},
-];
+// Прайс и клипы по умолчанию — в блоке <script id="site-data"> выше. Админка (data.json) меняет цены, клипы и показ команды.
+const SITE_DATA = JSON.parse(document.getElementById("site-data").textContent);
+const MENU = SITE_DATA.menu;
 // Расписание: дни недели (1 = пн … 7 = вс) и время по Москве
 const SCHEDULE = { days: [5, 6, 7], time: "23:00" };
 // Команда (всегда на стримах): кнопки в счёте + карточки в разделе «Команда».
@@ -610,16 +627,32 @@ const GOAL = { title: "", need: 0, have: 0 };
 // Зал славы: { name: "ник", sum: 5000, note: "оплатил налысо" }. Пусто — блок не показывается.
 const HALL = [
 ];
-// Лучшие моменты: ссылки на клипы Twitch (clips.twitch.tv/... или twitch.tv/.../clip/...) и видео TikTok.
-const CLIPS = [
-  "https://www.twitch.tv/s0lne4nyy/clip/ExpensiveConcernedOpossumM4xHeh-p0ChWExgdNwKlFrI",
-  "https://www.twitch.tv/s0lne4nyy/clip/FancyTangibleTaroPeteZaroll-cYzaSwhi1nIH34c6",
-  "https://www.twitch.tv/s0lne4nyy/clip/CalmIronicCrabsSoBayed-hftGd8d0hnQIb3ZU",
-  "https://www.twitch.tv/s0lne4nyy/clip/ObeseLaconicFishWutFace-aF7apb_Ln26db3mw",
-  "https://www.twitch.tv/s0lne4nyy/clip/TalentedLittleHornetAMPEnergy-SDXkLWVTSzQt3KKt",
-  "https://www.twitch.tv/s0lne4nyy/clip/TastyPeppyLadiesWTRuck-J_3OPXKPnRbxQZTh",
-];
+// Лучшие моменты: ссылки на клипы Twitch и видео TikTok (по умолчанию — из site-data).
+const CLIPS = SITE_DATA.clips;
 /* ===================================================== */
+
+/* данные из админки: data.json рядом с сайтом (если его нет — остаётся то, что выше) */
+let TEAM_MODE = "auto";   // auto — команда видна, только пока идёт стрим; on — всегда; off — никогда
+let PRESENT = [];         // кто сейчас на стриме — переключатели в админке (отметки старше 12 часов не считаются)
+function applyPresence(d){
+  if (!d || typeof d !== "object") return;
+  if (["auto", "on", "off"].includes(d.team)) TEAM_MODE = d.team;
+  const fresh = d.presentAt && Date.now() - Date.parse(d.presentAt) < 12 * 3600e3;
+  PRESENT = fresh && Array.isArray(d.present) ? d.present.filter(n => typeof n === "string") : [];
+}
+async function loadData(){
+  try {
+    const ctl = new AbortController(); setTimeout(() => ctl.abort(), 3000);
+    const r = await fetch("data.json?t=" + Date.now(), { cache: "no-store", signal: ctl.signal });
+    return r.ok ? await r.json() : null;
+  } catch (e) { return null; }
+}
+const DATA = await loadData();
+if (DATA && typeof DATA === "object") {
+  if (DATA.prices) MENU.forEach(c => c.items.forEach(i => { const p = Math.round(+DATA.prices[i.id]); if (p > 0) i.price = p; }));
+  if (Array.isArray(DATA.clips)) CLIPS.splice(0, CLIPS.length, ...DATA.clips.filter(u => typeof u === "string"));
+  applyPresence(DATA);
+}
 
 const $ = s => document.querySelector(s);
 const rub = n => n.toLocaleString("ru-RU").replace(/ /g," ") + " ₽";
@@ -685,10 +718,16 @@ if (!Array.isArray(cart)) cart = [];
 const STREAMER = (GUESTS.find(g => g.streamer) || { name: "стример" }).name;
 cart = cart.filter(l => byId[l.id] && l.q > 0);
 cart.forEach(l => { if (l.mode !== "name") { l.mode = "name"; l.who = STREAMER; } });
-const guestsFor = id => byId[id].solo ? [] : GUESTS.filter(g => (g.tasks === "all" || (g.tasks || []).includes(id)) && !(g.except || []).includes(id)).map(g => g.name);
+let LIVE = false;                                         // идёт ли стрим (узнаём ниже через decapi)
+const teamOn = () => TEAM_MODE === "on" || (TEAM_MODE === "auto" && LIVE);
+const here = g => teamOn() && PRESENT.includes(g.name);           // кого сейчас показываем на сайте
+const ANYONE = "кто на стриме";
+// кому по умолчанию: вне стрима — Денису; на стриме — Денису, если он отмечен, иначе первому отмеченному
+const defWho = () => !teamOn() ? STREAMER : PRESENT.includes(STREAMER) ? STREAMER : (GUESTS.find(here) || { name: ANYONE }).name;
+const guestsFor = id => byId[id].solo ? [] : GUESTS.filter(g => here(g) && (g.tasks === "all" || (g.tasks || []).includes(id)) && !(g.except || []).includes(id)).map(g => g.name);
 const whoLabel = l => (l.who || "").trim();
-let pickWho = STREAMER;   // кому идут новые задания (меняется кнопкой «Заказать» в разделе «Команда»)
-function addLine(id, mode = "name", who = guestsFor(id).includes(pickWho) ? pickWho : STREAMER, q = 1){
+let pickWho = null;       // кому идут новые задания (кнопка «Заказать» в разделе «Команда»); null — по умолчанию
+function addLine(id, mode = "name", who = byId[id].solo ? STREAMER : guestsFor(id).includes(pickWho) ? pickWho : defWho(), q = 1){
   const l = cart.find(x => x.id === id && x.mode === mode && (x.who || "") === who);
   if (l) l.q += q; else cart.push({ id, q, mode, who });
 }
@@ -716,13 +755,13 @@ function render(){
       const on = l.mode === mode && (mode !== "name" || who === null || (l.who || "") === who);
       return `<button class="${on ? "on" : ""}" data-w="${n}" data-mode="${mode}"${who !== null ? ` data-who="${esc(who)}"` : ""}>${esc(label)}</button>`;
     };
-    const isOther = l.mode === "name" && !guests.includes(l.who || "");
+    const isOther = l.mode === "name" && !guests.includes(l.who || "") && l.who !== ANYONE && !GUESTS.some(g => g.name === l.who);
     return `<div class="it">
       <span class="n">${i.title}</span><span class="s">${rub(i.price * q)}</span>
       <span class="qty"><button data-m="${n}" aria-label="Меньше">−</button><span>${qtyLabel(i,q)}</span><button data-p="${n}" aria-label="Больше">+</button></span>
       <button class="x" data-x="${n}">убрать</button>
-      ${i.solo ? "" : `<div class="who"><span>Кто делает:</span>
-        ${guests.map(g => chip("name", g, g)).join("")}
+      ${i.solo || !teamOn() ? "" : `<div class="who"><span>Кто делает:</span>
+        ${guests.length ? guests.map(g => chip("name", g, g)).join("") : chip("name", ANYONE, "Кто на стриме")}
         <button class="${isOther ? "on" : ""}" data-w="${n}" data-mode="other">Вписать имя</button>
         ${isOther ? `<input data-in="${n}" value="${esc(l.who || "")}" placeholder="имя" maxlength="30">` : ""}
         ${isOther ? `<p class="ask">Это гость, не из команды — сначала спроси в чате, есть ли он на стриме и будет ли выполнять задание.</p>` : ""}
@@ -782,7 +821,7 @@ document.querySelectorAll("[data-pay]").forEach(a => a.addEventListener("click",
     return;
   }
   const TEAM = GUESTS.map(g => g.name);
-  const guests = [...new Set(cart.map(l => l.who.trim()).filter(w => !TEAM.includes(w)))];
+  const guests = [...new Set(cart.map(l => l.who.trim()).filter(w => !TEAM.includes(w) && w !== ANYONE))];
   if (guests.length) {               // есть задания гостям — сначала спрашиваем
     e.preventDefault();
     askHref = a.href;
@@ -822,19 +861,27 @@ new IntersectionObserver(es => { billVisible = es[0].isIntersecting; render(); }
 
 /* команда */
 function renderTeam(){
-  $("#teamList").innerHTML = GUESTS.map(g => `
+  const shown = GUESTS.filter(here);
+  if (pickWho && !shown.some(g => g.name === pickWho)) pickWho = null;
+  $("#teamSub").textContent = !teamOn()
+    ? "Команда появится здесь, когда начнётся стрим. Пока задания делает Денис."
+    : shown.length ? "Сейчас на стриме. Нажми «Заказать» — и всё, что добавишь в счёт, пойдёт этому человеку."
+    : "Стрим идёт — сейчас отметим, кто в кадре.";
+  $("#teamList").innerHTML = shown.map(g => `
     <div class="mate${g.streamer ? " mate-st" : ""} reveal in">
       <div class="ph">${g.photo ? `<img src="${esc(g.photo)}" alt="${esc(g.name)}" loading="lazy">` : esc(g.name[0])}${g.quote ? `<span class="quote">${esc(g.quote)}</span>` : ""}</div>
       <small>${esc(g.role || "")}</small><h3>${esc(g.name)}</h3><p>${esc(g.about || "")}</p>
       <button data-pick="${esc(g.name)}" class="${pickWho === g.name ? "on" : ""}">${pickWho === g.name ? "Выбран" : "Заказать"}</button>
-    </div>`).join("");
-  $("#pick").hidden = pickWho === STREAMER;
+    </div>`).join("") + (shown.length ? "" : `<div class="mate mate-wait reveal in"><div class="ph">?</div>
+      <small>Команда</small><h3>${teamOn() ? "Скоро отметим" : "После начала стрима"}</h3>
+      <p>${teamOn() ? "Кто сейчас в кадре — появится тут через минуту-другую." : "Кто будет на стриме — появится тут, когда начнётся эфир."}</p></div>`);
+  $("#pick").hidden = !pickWho;
   $("#pickTxt").textContent = `Новые задания пойдут: ${pickWho}`;
 }
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-pick]");
   if (b) { pickWho = b.dataset.pick; renderTeam(); $("#menu").scrollIntoView({ behavior: "smooth" }); }
-  if (e.target.id === "pickReset") { pickWho = STREAMER; renderTeam(); }
+  if (e.target.id === "pickReset") { pickWho = null; renderTeam(); }
 });
 renderTeam();
 
@@ -896,12 +943,24 @@ if (location.hostname) {
   $("#player").innerHTML = `<iframe src="https://player.twitch.tv/?channel=${CONFIG.twitch}&parent=${location.hostname}&muted=true&autoplay=false" allowfullscreen title="Стрим на Twitch"></iframe>`;
 }
 
-/* в эфире или нет */
-fetch(`https://decapi.me/twitch/uptime/${CONFIG.twitch}`).then(r => r.text()).then(t => {
-  const on = t && !/offline|error|not found/i.test(t);
-  const el = $("#live"); el.classList.toggle("on", on);
-  el.querySelector("span").textContent = on ? "В эфире" : "Не в эфире";
-}).catch(() => {});
+/* в эфире или нет: проверяем сразу и потом раз в 2 минуты; от этого зависит, видна ли команда */
+function checkLive(){
+  fetch(`https://decapi.me/twitch/uptime/${CONFIG.twitch}?t=${Date.now()}`).then(r => r.text()).then(t => {
+    const on = !!t && !/offline|error|not found|invalid/i.test(t);
+    const el = $("#live"); el.classList.toggle("on", on);
+    el.querySelector("span").textContent = on ? "В эфире" : "Не в эфире";
+    if (on !== LIVE) { LIVE = on; renderTeam(); render(); }
+  }).catch(() => {});
+}
+checkLive(); setInterval(checkLive, 120e3);
+/* кто на стриме меняется по ходу эфира — раз в минуту перечитываем data.json */
+setInterval(async () => {
+  if (document.hidden) return;
+  const d = await loadData(); if (!d) return;
+  const before = JSON.stringify([TEAM_MODE, PRESENT]);
+  applyPresence(d);
+  if (JSON.stringify([TEAM_MODE, PRESENT]) !== before) { renderTeam(); render(); }
+}, 60e3);
 
 /* плавное появление блоков */
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .12 });
